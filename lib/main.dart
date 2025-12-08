@@ -16,8 +16,8 @@ Future<void> main() async {
   
   // 【重要】请填入你的 Supabase URL 和 Anon Key
   await Supabase.initialize(
-    url: 'https://ecqzdwemcwdmchzetwhr.supabase.co', // 替换你的 URL
-    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjcXpkd2VtY3dkbWNoemV0d2hyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUxMjcyMTAsImV4cCI6MjA4MDcwMzIxMH0.NNbVk2U7rJcW4cRQpdOYQPNnfIqfPVQOXlvSvhAKICM', // 替换你的 Key
+    url: 'YOUR_SUPABASE_URL', // 替换你的 URL
+    anonKey: 'YOUR_SUPABASE_ANON_KEY', // 替换你的 Key
   );
 
   runApp(const MyApp());
