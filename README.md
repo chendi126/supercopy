@@ -1,16 +1,115 @@
-# supercopyboardflutter
+# 超级剪切板 Pro (SuperCopy)
 
-A new Flutter project.
+一款支持**云端同步**的智能剪贴板管理应用，基于 Flutter 开发，支持 Android、iOS、Windows、macOS、Linux、Web 多平台。
 
-## Getting Started
+## ✨ 功能特性
 
-This project is a starting point for a Flutter application.
+### 📋 智能识别
+- **验证码识别** - 自动提取短信中的 4-8 位验证码
+- **电话号码识别** - 智能识别手机号码，支持一键拨打
+- **链接识别** - 自动检测 URL，支持一键打开浏览器
+- **地址识别** - 识别收货地址等位置信息
 
-A few resources to get you started if this is your first Flutter project:
+### ☁️ 云端同步
+- 基于 **Supabase** 实现数据云端存储
+- 多设备实时同步，换手机不丢数据
+- 安全的邮箱注册与登录系统
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### 🎨 用户体验
+- **Material Design 3** 现代化 UI 设计
+- 支持浅色/深色主题切换
+- 下拉刷新同步数据
+- 滑动删除历史记录
+- 收藏重要内容（收藏内容清空时会保留）
+- 震动反馈（可关闭）
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 📸 截图
+
+*（可添加应用截图）*
+
+## 🚀 快速开始
+
+### 环境要求
+- Flutter SDK >= 3.10.3
+- Dart SDK >= 3.0.0
+
+### 安装运行
+
+```bash
+# 克隆项目
+git clone https://github.com/chendi126/supercopy.git
+
+# 进入目录
+cd supercopy
+
+# 安装依赖
+flutter pub get
+
+# 运行应用
+flutter run
+```
+
+### 配置 Supabase（可选）
+
+如需使用自己的 Supabase 后端，请修改 `lib/main.dart` 中的配置：
+
+```dart
+await Supabase.initialize(
+  url: 'YOUR_SUPABASE_URL',
+  anonKey: 'YOUR_SUPABASE_ANON_KEY',
+);
+```
+
+## 📦 主要依赖
+
+| 依赖包 | 用途 |
+|--------|------|
+| supabase_flutter | 云端数据存储与用户认证 |
+| shared_preferences | 本地偏好设置存储 |
+| url_launcher | 打开链接/拨打电话 |
+| vibration | 震动反馈 |
+| intl | 日期时间格式化 |
+| fluttertoast | Toast 提示 |
+
+## 📁 项目结构
+
+```
+lib/
+├── main.dart          # 应用入口 + 主页面 + 核心逻辑
+├── login_page.dart    # 登录/注册页面
+└── detail_page.dart   # 剪贴板内容详情页
+```
+
+## 🛠️ 构建发布
+
+```bash
+# Android APK
+flutter build apk --release
+
+# iOS
+flutter build ios --release
+
+# Windows
+flutter build windows --release
+
+# Web
+flutter build web --release
+```
+
+## 👨‍💻 开发者
+
+- **作者**: 太空人
+- **邮箱**: 3403938458@qq.com
+- **QQ群**: 1072752343
+
+## 📄 许可证
+
+本项目仅供学习交流使用。
+
+## 🤝 贡献
+
+欢迎提交 Issue 和 Pull Request！
+
+---
+
+如果这个项目对你有帮助，请给一个 ⭐ Star 支持一下！
