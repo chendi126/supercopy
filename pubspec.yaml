@@ -43,6 +43,8 @@ dependencies:
   google_fonts: ^6.3.3
   animations: ^2.1.1
   supabase_flutter: ^2.10.3
+  confetti: ^0.7.0 # 建议使用最新版本
+  http: ^1.1.0
 
 dev_dependencies:
   flutter_test:
@@ -66,6 +68,8 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  assets:
+    - assets/pay.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
@@ -108,3 +112,5 @@ flutter_launcher_icons:
   windows:
     generate: true
     icon_size: 48
+
+  

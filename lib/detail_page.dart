@@ -124,7 +124,7 @@ class _DetailPageState extends State<DetailPage> {
                         ),
                         child: Column(
                           children: [
-                            if (item.type == 'code')
+                            if (['code', 'pickup', 'verification', '取件码', '验证码'].contains(item.type))
                               Container(
                                 padding: const EdgeInsets.all(16),
                                 decoration: BoxDecoration(
@@ -159,7 +159,7 @@ class _DetailPageState extends State<DetailPage> {
                             const SizedBox(height: 8),
                             Align(
                               alignment: Alignment.centerLeft,
-                              child: Text(item.content,
+                              child: SelectableText(item.content,
                                   style: const TextStyle(height: 1.5)),
                             ),
                           ],
