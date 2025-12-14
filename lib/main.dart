@@ -1134,39 +1134,54 @@ class _HomePageState extends State<HomePage> {
 
 
   // --- 修改：读取剪贴板 (自动触发 AI) ---
-  Future<void> _readClipboard() async {
-    ClipboardData? data = await Clipboard.getData(Clipboard.kTextPlain);
-    if (data != null && data.text != null && data.text!.isNotEmpty) {
-      String text = data.text!;
-      
-      // 1. 查重
-      if (historyList.isNotEmpty && historyList.first.content == text) {
-         _showToast("内容已存在");
-         return;
-      }
-
-      _showToast("正在读取并进行 AI 分析...");
-      _triggerVibration();
-
-      // 2. 先把“原始内容”上传到云端，占个位置 (防止 AI 分析慢导致界面卡住)
-      // 这一步会生成 ID，并在界面显示一个“正在分析...”的状态
-      final newItemId = await _uploadToCloud(text, 'text', isTemp: true);
-
-      // 3. 拿到 ID 后，立刻让 AI 去分析，分析完自动更新数据库
-      if (newItemId != null) {
-        // 构造一个临时 item 传给 AI
-        ClipboardItem tempItem = _analyzeText(text); 
-        tempItem.id = newItemId;
-        
-        // 调用 AI，AI 成功后会直接 update 数据库
-        // 数据库 update 后，上面的 Stream 会自动刷新界面！
-        _analyzeWithKimi(tempItem); 
-      }
-
-    } else {
-      _showToast("剪贴板为空");
+ // --- 修复后的：读取剪贴板 (本地立即显示 + 后台静默上传) ---
+Future<void> _readClipboard() async {
+  ClipboardData? data = await Clipboard.getData(Clipboard.kTextPlain);
+  if (data != null && data.text != null && data.text!.isNotEmpty) {
+    String text = data.text!;
+    
+    // 1. 查重
+    if (historyList.isNotEmpty && historyList.first.content == text) {
+       _showToast("内容已存在");
+       return;
     }
+
+    _showToast("正在读取并进行 AI 分析...");
+    _triggerVibration();
+
+    // ================= 【核心修改开始：乐观更新】 =================
+    
+    // A. 本地快速分析出基础信息 (使用本地的 _analyzeText)
+    ClipboardItem tempItem = _analyzeText(text); 
+    
+    // B. 【关键】立即更新 UI 列表
+    if (mounted) {
+      setState(() {
+        historyList.insert(0, tempItem);
+      });
+    }
+
+    // ================= 【核心修改结束】 =================
+
+    // 2. 后台异步上传 (将原来的步骤 2 变为后台任务)
+    // 这一步会生成真实的 ID，并插入数据库
+    final newItemId = await _uploadToCloud(text, 'text', isTemp: true);
+
+    // 3. 拿到 ID 后，触发 AI 分析
+    if (newItemId != null) {
+      // 构造一个带 ID 的 item 传给 AI
+      tempItem.id = newItemId; 
+      
+      // 调用 AI 分析，AI 分析完成后会 update 数据库。
+      // 数据库 update 会触发 Realtime Stream 刷新，将 AI 结果带回 UI，替换掉本地的临时数据。
+      _analyzeWithKimi(tempItem); 
+    }
+
+  } else {
+    _showToast("剪贴板为空");
   }
+}
+
   // --- 修复：添加历史记录 (即时响应) ---
   void _addHistory(String text, {bool fromCloud = false}) {
     // 1. 查重
